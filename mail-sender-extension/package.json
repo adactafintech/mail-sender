@@ -15,19 +15,55 @@
     "watch": "tsc -w -p ./"
   },
   "contributes": {
-		"commands": [
-			{
-				"command": "mail-sender.show",
-				"title": "Show mail sender form",
-				"category": "Mail Sender"
-			}
-		]
-	},
+    "commands": [
+      {
+        "command": "mail-sender.show",
+        "title": "Show mail sender form",
+        "category": "Mail Sender"
+      }
+    ],
+    "configuration": {
+      "title": "MailSender",
+      "properties": {
+        "mailSender.host": {
+          "type": "string",
+          "scope": "application",
+          "description": "SMTP Host."
+        },
+        "mailSender.port": {
+          "type": "number",
+          "scope": "application",
+          "description": "SMTP port.",
+          "default": 2525
+        },
+        "mailSender.secure": {
+          "type": "boolean",
+          "scope": "application",
+          "description": "Should use secure transport.",
+          "default": true
+        },
+        "mailSender.username": {
+          "type": "string",
+          "scope": "application",
+          "description": "Username used to authenticate."
+        },
+        "mailSender.password": {
+          "type": "string",
+          "scope": "application",
+          "description": "Password used to authenticate."
+        }
+      }
+    }
+  },
   "activationEvents": [
     "*"
   ],
+  "dependencies": {
+    "nodemailer": "6.7.3"
+  },
   "devDependencies": {
     "@types/node": "^17.0.29",
+    "@types/nodemailer": "6.4.4",
     "@types/vscode": "^1.66.0",
     "typescript": "^4.6.3"
   }
