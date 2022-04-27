@@ -1,0 +1,25 @@
+{
+  "author": "Adacta Fintech",
+  "license": "UNLICENSED",
+  "name": "mail-sender-extension",
+  "version": "1.0.0",
+  "description": "Mail sender VSCode extension",
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -w -p ./"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "devDependencies": {
+    "@types/node": "^17.0.29",
+    "@types/vscode": "^1.66.0",
+    "typescript": "^4.6.3"
+  }
+}
