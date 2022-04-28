@@ -2,13 +2,15 @@ import * as vscode from 'vscode';
 import { MailSenderCommands } from './model/commands';
 import { SmtpMailSender } from './services/smtp-mail-sender.service';
 import { MailSenderConfiguration } from './util/mail-sender-configuration';
+import { MailSenderWebview } from './webviews/mail-sender.webview';
 
 export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage('Mail Sender Activated');
 
     context.subscriptions.push(
         vscode.commands.registerCommand(MailSenderCommands.Show, async () => {
-            await sendMail();
+            // await sendMail();
+			MailSenderWebview.createOrShow(context);
         })
     );
 }
