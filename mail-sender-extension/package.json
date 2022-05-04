@@ -10,8 +10,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "lint": "eslint . --ext .ts,.tsx",
+    "compile": "tsc -p ./", 
     "watch": "tsc -w -p ./"
   },
   "contributes": {
@@ -23,34 +22,38 @@
       }
     ],
     "configuration": {
-      "title": "MailSender",
+      "title": "Mail Sender",
       "properties": {
         "mailSender.host": {
           "type": "string",
+          "description": "SMTP host.",
           "scope": "application",
-          "description": "SMTP Host."
+          "order": 0
         },
         "mailSender.port": {
           "type": "number",
           "scope": "application",
           "description": "SMTP port.",
-          "default": 2525
+          "order": 1
         },
         "mailSender.secure": {
           "type": "boolean",
           "scope": "application",
           "description": "Should use secure transport.",
-          "default": true
+          "default": true,
+          "order": 2
         },
         "mailSender.username": {
           "type": "string",
           "scope": "application",
-          "description": "Username used to authenticate."
+          "description": "Username used to authenticate.",
+          "order": 3
         },
         "mailSender.password": {
           "type": "string",
           "scope": "application",
-          "description": "Password used to authenticate."
+          "description": "Password used to authenticate.",
+          "order": 4
         }
       }
     }

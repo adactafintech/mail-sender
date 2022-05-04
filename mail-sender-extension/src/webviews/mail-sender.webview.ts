@@ -1,5 +1,9 @@
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import { MailData, SmtpSettings } from '../model/mail.models';
+import { ExternalMessage } from '../model/message.model';
+import { SmtpMailSender } from '../services/smtp-mail-sender.service';
+import { MailSenderConfiguration } from '../util/mail-sender-configuration';
 
 export class MailSenderWebview {
     public static currentInstance: MailSenderWebview | undefined;
@@ -57,8 +61,17 @@ export class MailSenderWebview {
         this._panel.dispose();
     };
 
-    private onDidReceiveMessage = (message: any) => {
-        console.log(message);
+    private onDidReceiveMessage = async (message: any) => {
+        switch (message?.command) {
+            case 'formReady':
+                this.sendInitialData();
+                break;
+            case 'sendMail':
+                await this.sendMail(message.data);
+                break;
+            default:
+                break;
+        }
     };
 
     private postMessage(message: any): void {
@@ -69,28 +82,63 @@ export class MailSenderWebview {
         this._panel.webview.html = this.getHtmlForWebview();
     }
 
-    private getHtmlForWebview() {
+    private sendInitialData = (): void => {
+        const msg: ExternalMessage<any> = {
+            command: 'initialData',
+            data: {
+                mailFrom: 'testuser',
+            },
+        };
+
+        this.postMessage(msg);
+    };
+
+    private sendMail = async (mailData: MailData): Promise<void> => {
+        try {
+            const smtpSettings: SmtpSettings =
+                MailSenderConfiguration.smtpSettings;
+
+            const msgid = await SmtpMailSender.sendMail(mailData, smtpSettings);
+
+            vscode.window.showInformationMessage(`Mail sent, msg id ${msgid}.`);
+        } catch (err) {
+            vscode.window.showErrorMessage(`Error sending mail, err: ${err}.`);
+        }
+    };
+
+    private getHtmlForWebview(): string {
         let html: string;
 
+        const mediaUri = MailSenderWebview.getMediaWebviewsPath(
+            this._context.extensionUri
+        );
+
         const indexFilePath = vscode.Uri.joinPath(
-            MailSenderWebview.getMediaWebviewsPath(this._context.extensionUri),
+            mediaUri,
             'index.html'
         ).fsPath;
 
         if (fs.existsSync(indexFilePath)) {
             html = fs.readFileSync(indexFilePath, 'utf8');
+
+            const mediaWebviewUri = this._panel.webview.asWebviewUri(mediaUri);
+
+            html = html.replace(
+                '<base href="/">',
+                `<base href="${mediaWebviewUri.toString()}/">`
+            );
         } else {
             html = `<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Mail Sender Error</title>
-			</head>
-			<body>
-				<h1>Mail Sender Media Not Found</h1>
-			</body>
-			</html>`;
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Mail Sender Error</title>
+            </head>
+            <body>
+                <h1>Mail Sender</h1>
+            </body>
+            </html>`;
         }
 
         return html;
