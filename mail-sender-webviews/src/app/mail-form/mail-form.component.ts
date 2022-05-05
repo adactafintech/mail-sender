@@ -7,7 +7,7 @@ import { MessagingService } from '../services/messaging.service';
 @Component({
     selector: 'app-mail-form',
     templateUrl: './mail-form.component.html',
-    styles: [],
+    styleUrls: ['./mail-form.component.scss'],
 })
 export class MailFormComponent implements OnInit, OnDestroy {
     public initialData: any;
@@ -30,12 +30,12 @@ export class MailFormComponent implements OnInit, OnDestroy {
     }
 
     public send(): void {
-      this._messaging.postMessage('sendMail', this.mail);
+        this._messaging.postMessage('sendMail', this.mail);
     }
 
     private msgReceivedHandler = (msg: ExternalMessage<any>): void => {
         if (msg?.command === 'initialData') {
-          this.initialData = msg.data;
+            this.initialData = msg.data;
         }
     };
 }

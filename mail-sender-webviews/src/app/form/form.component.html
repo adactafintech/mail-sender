@@ -1,0 +1,34 @@
+<div class="example-container">
+    <form [formGroup]="reactiveForm" (ngSubmit)="submitMail()">
+        <input class="form-control" formControlName="userFrom" />
+
+
+        <mat-form-field class="example-chip-list" appearance="fill">
+            <mat-label>Emails To</mat-label>
+            <mat-chip-list #chipList aria-label="EmailsTo">
+                <mat-chip *ngFor="let email of reactiveForm.controls['usersTo'].value" (removed)="remove(email)">
+                    {{email}}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip>
+            </mat-chip-list>
+            <input placeholder="New email..." [matChipInputFor]="chipList" (matChipInputTokenEnd)="add($event)"
+                formControlName="newEmail">
+            <span *ngIf="!reactiveForm.controls['newEmail'].valid && reactiveForm.controls['newEmail'].dirty">
+                {{ userToValidationWarning }}</span>
+        </mat-form-field>
+
+        <input class="form-control" placeholder="Subject" formControlName="subject" />
+        <span
+            *ngIf="!reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
+            {{ subjectValidationWarning }}</span>
+
+        <textarea class="form-control" placeholder="Mail Content" formControlName="mailContent"></textarea>
+        <span
+            *ngIf="!reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
+            {{ subjectValidationWarning }}</span>
+
+        <button type="submit" [disabled]="!isFormValid()">Submit</button>
+    </form>
+</div>
