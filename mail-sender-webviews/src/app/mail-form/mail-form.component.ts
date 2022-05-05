@@ -12,7 +12,6 @@ import { MessagingService } from '../services/messaging.service';
 export class MailFormComponent implements OnInit, OnDestroy {
     public initialData: any;
     public mail: MailData = {};
-
     private _msgReceivedSubscription: Subscription;
 
     constructor(private _messaging: MessagingService) {
@@ -29,8 +28,8 @@ export class MailFormComponent implements OnInit, OnDestroy {
         this._messaging.postMessage('formReady');
     }
 
-    public send(): void {
-        this._messaging.postMessage('sendMail', this.mail);
+    public send(data: MailData): void {
+        this._messaging.postMessage('sendMail', data);
     }
 
     private msgReceivedHandler = (msg: ExternalMessage<any>): void => {

@@ -1,11 +1,13 @@
-<div class="example-container">
-    <form [formGroup]="reactiveForm" (ngSubmit)="submitMail()">
+<form [formGroup]="reactiveForm" (ngSubmit)="submitMail()">
+    <div class="form-group">
+        <label>From:</label>
         <input class="form-control" formControlName="userFrom" />
+    </div>
 
-
+    <div class="form-group">
+        <label>Email to:</label>
         <mat-form-field class="example-chip-list" appearance="fill">
-            <mat-label>Emails To</mat-label>
-            <mat-chip-list #chipList aria-label="EmailsTo">
+            <mat-chip-list #chipList aria-label="Emails To">
                 <mat-chip *ngFor="let email of reactiveForm.controls['usersTo'].value" (removed)="remove(email)">
                     {{email}}
                     <button matChipRemove>
@@ -13,22 +15,32 @@
                     </button>
                 </mat-chip>
             </mat-chip-list>
-            <input placeholder="New email..." [matChipInputFor]="chipList" (matChipInputTokenEnd)="add($event)"
-                formControlName="newEmail">
+            <input placeholder="Enter recipient here..." [matChipInputFor]="chipList"
+                (matChipInputTokenEnd)="add($event)" formControlName="newEmail">
             <span *ngIf="!reactiveForm.controls['newEmail'].valid && reactiveForm.controls['newEmail'].dirty">
                 {{ userToValidationWarning }}</span>
         </mat-form-field>
+    </div>
 
-        <input class="form-control" placeholder="Subject" formControlName="subject" />
+    <div class="form-group">
+        <label>Subject:</label>
+        <input class="form-control" placeholder="Enter subject here..." formControlName="subject" />
         <span
             *ngIf="!reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
             {{ subjectValidationWarning }}</span>
+    </div>
 
-        <textarea class="form-control" placeholder="Mail Content" formControlName="mailContent"></textarea>
+    <div class="form-group">
+        <label>Content:</label>
+        <textarea class="form-control" placeholder="Enter mail content here..."
+            formControlName="mailContent"></textarea>
         <span
             *ngIf="!reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
             {{ subjectValidationWarning }}</span>
+    </div>
 
-        <button type="submit" [disabled]="!isFormValid()">Submit</button>
-    </form>
-</div>
+    <div class="form-group button-group">
+        <button class="btn btn-success" type="submit" [disabled]="!isFormValid()">Submit</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="resetReactiveForm()">Clear form</button>
+    </div>
+</form>

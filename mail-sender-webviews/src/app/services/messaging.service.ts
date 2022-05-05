@@ -2,6 +2,7 @@ declare let vscode: any;
 
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { MailData } from '../model/mail.models';
 import { ExternalMessage } from '../model/message.models';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class MessagingService {
         return this._externalMessageSubject.asObservable();
     }
 
-    public postMessage(command: string, data?: any): void {
+    public postMessage(command: string, data?: MailData): void {
         const message: ExternalMessage<any> = {
             command,
             data,

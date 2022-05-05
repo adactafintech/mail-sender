@@ -29,7 +29,7 @@ export class MailSenderWebview {
 
             MailSenderWebview.currentInstance = new MailSenderWebview(
                 panel,
-                context
+                context,
             );
         }
     }
@@ -45,7 +45,7 @@ export class MailSenderWebview {
 
     private constructor(
         panel: vscode.WebviewPanel,
-        context: vscode.ExtensionContext
+        context: vscode.ExtensionContext,
     ) {
         this._panel = panel;
         this._context = context;
@@ -83,10 +83,12 @@ export class MailSenderWebview {
     }
 
     private sendInitialData = (): void => {
+        const smtpSettings: SmtpSettings =
+                MailSenderConfiguration.smtpSettings;
         const msg: ExternalMessage<any> = {
             command: 'initialData',
             data: {
-                mailFrom: 'testuser',
+                mailFrom: smtpSettings.username,
             },
         };
 

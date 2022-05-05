@@ -19,7 +19,7 @@ export class SmtpMailSender {
 
         const result = await transporter.sendMail({
             from: mailData.from,
-            to: mailData.from,
+            to: mailData.to,
             subject: mailData.subject,
             text: mailData.body,
         });

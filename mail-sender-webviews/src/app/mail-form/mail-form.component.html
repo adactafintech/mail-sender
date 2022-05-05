@@ -1,9 +1,9 @@
-<div *ngIf="!initialData">
-    <div class="loader center"></div>
-</div>
-
-<div *ngIf="initialData">
-    <app-form></app-form>
-    <!-- <input type="text" value="Subject" [(ngModel)]="mail.subject">
-    <button (click)="send()">Send</button> -->
-</div>
+<body>
+    <div *ngIf="!initialData">
+        <!-- <span class="loader center"></span> -->
+        <app-form (sendMail)="send($event)" [data]="initialData"></app-form>
+    </div>
+    <div *ngIf="initialData">
+        <app-form (sendMail)="send($event)" [data]="initialData"></app-form>
+    </div>
+</body>
