@@ -1,7 +1,6 @@
 <form [formGroup]="reactiveForm" (ngSubmit)="submitMail()">
-
     <div class="form-group second">
-        <button class="btn btn-outline-secondary submit" type="submit" [disabled]="!isFormValid()"><i
+        <button class="btn btn-outline-success submit" type="submit" [disabled]="!isFormValid()"><i
                 class="fas fa-paper-plane"></i></button>
         <div>
             <label>From:</label>
@@ -34,9 +33,9 @@
         <label>Subject:</label>
         <input class="form-control inp" placeholder="Enter subject here..." formControlName="subject" />
     </div>
-    <div>
+    <div class="third left">
         <span
-            *ngIf="!reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
+            *ngIf="reactiveForm.controls['subject'].enabled && !reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
             {{ subjectValidationWarning }}</span>
     </div>
 
@@ -45,9 +44,13 @@
         <textarea class="form-control inp" placeholder="Enter mail content here..." formControlName="mailContent"
             rows="3"></textarea>
     </div>
-    <div>
+    <div class="third left">
         <span
-            *ngIf="!reactiveForm.controls['mailContent'].valid && (reactiveForm.controls['mailContent'].touched || reactiveForm.controls['mailContent'].dirty)">
+            *ngIf="reactiveForm.controls['mailContent'].enabled && !reactiveForm.controls['mailContent'].valid && (reactiveForm.controls['mailContent'].touched || reactiveForm.controls['mailContent'].dirty)">
             {{ mailContentValidationWarning }}</span>
     </div>
+    
 </form>
+<div *ngIf="waiting">
+    <span class="loader center"></span>
+</div>

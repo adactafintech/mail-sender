@@ -83,12 +83,10 @@ export class MailSenderWebview {
     }
 
     private sendInitialData = (): void => {
-        const smtpSettings: SmtpSettings =
-                MailSenderConfiguration.smtpSettings;
         const msg: ExternalMessage<any> = {
             command: 'initialData',
             data: {
-                mailFrom: smtpSettings.username,
+                mailFrom: 'test@example.com',
             },
         };
 
@@ -97,13 +95,33 @@ export class MailSenderWebview {
 
     private sendMail = async (mailData: MailData): Promise<void> => {
         try {
+            // send message waiting
+            const message: ExternalMessage<any> = {
+                command: 'waiting'
+            };
+
+            this.postMessage(message);
+
             const smtpSettings: SmtpSettings =
                 MailSenderConfiguration.smtpSettings;
 
             const msgid = await SmtpMailSender.sendMail(mailData, smtpSettings);
 
+            const msg: ExternalMessage<any> = {
+                command: 'successfullySentEmail'
+            };
+
+            this.postMessage(msg);
+
             vscode.window.showInformationMessage(`Mail sent, msg id ${msgid}.`);
         } catch (err) {
+
+            const msg: ExternalMessage<any> = {
+                command: 'failSendingEmail'
+            };
+
+            this.postMessage(msg);
+
             vscode.window.showErrorMessage(`Error sending mail, err: ${err}.`);
         }
     };

@@ -4,6 +4,11 @@ import { MailData } from '../model/mail.models';
 import { ExternalMessage } from '../model/message.models';
 import { MessagingService } from '../services/messaging.service';
 
+export enum MailStatus {
+    WAITING = 'waiting',
+    SUCCESS = 'successfullySentEmail',
+    FAIL = 'failSendingEmail'
+}
 @Component({
     selector: 'app-mail-form',
     templateUrl: './mail-form.component.html',
@@ -11,6 +16,7 @@ import { MessagingService } from '../services/messaging.service';
 })
 export class MailFormComponent implements OnInit, OnDestroy {
     public initialData: any;
+    public mailStatus: MailStatus | undefined;
     public mail: MailData = {};
     private _msgReceivedSubscription: Subscription;
 
@@ -33,8 +39,17 @@ export class MailFormComponent implements OnInit, OnDestroy {
     }
 
     private msgReceivedHandler = (msg: ExternalMessage<any>): void => {
-        if (msg?.command === 'initialData') {
-            this.initialData = msg.data;
+        switch (msg?.command) {
+            case 'waiting': this.mailStatus = MailStatus.WAITING;
+                break;
+            case 'initialData': this.initialData = msg.data;
+                break;
+            case 'successfullySentEmail': this.mailStatus = MailStatus.SUCCESS;
+                break;
+            case 'failSendingEmail': this.mailStatus = MailStatus.FAIL;
+                break;
+            default:
+                break;
         }
     };
 }
