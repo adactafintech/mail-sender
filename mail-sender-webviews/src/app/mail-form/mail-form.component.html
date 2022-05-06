@@ -1,9 +1,8 @@
-<body>
-    <div *ngIf="!initialData">
-        <!-- <span class="loader center"></span> -->
-        <app-form (sendMail)="send($event)" [data]="initialData"></app-form>
-    </div>
-    <div *ngIf="initialData">
-        <app-form (sendMail)="send($event)" [data]="initialData"></app-form>
-    </div>
-</body>
+<div *ngIf="!initialData">
+    <!-- <span class="loader center"></span> -->
+    <app-form (sendMail)="send($event)" [data]="initialData"></app-form>
+</div>
+
+<div *ngIf="initialData">
+    <app-form (sendMail)="send($event)" [data]="initialData"></app-form>
+</div>
