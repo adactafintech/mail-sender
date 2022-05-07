@@ -7,7 +7,7 @@ import { MessagingService } from '../services/messaging.service';
 export enum MailStatus {
     WAITING = 'waiting',
     SUCCESS = 'successfullySentEmail',
-    FAIL = 'failSendingEmail'
+    FAIL = 'failSendingEmail',
 }
 @Component({
     selector: 'app-mail-form',
@@ -36,17 +36,19 @@ export class MailFormComponent implements OnInit, OnDestroy {
 
     public send(data: MailData): void {
         this._messaging.postMessage('sendMail', data);
+        this.mailStatus = MailStatus.WAITING;
     }
 
     private msgReceivedHandler = (msg: ExternalMessage<any>): void => {
-        switch (msg?.command) {
-            case 'waiting': this.mailStatus = MailStatus.WAITING;
+        switch (msg?.command) {            
+            case 'initialData':
+                this.initialData = msg.data;
                 break;
-            case 'initialData': this.initialData = msg.data;
+            case 'successfullySentEmail':
+                this.mailStatus = MailStatus.SUCCESS;
                 break;
-            case 'successfullySentEmail': this.mailStatus = MailStatus.SUCCESS;
-                break;
-            case 'failSendingEmail': this.mailStatus = MailStatus.FAIL;
+            case 'failSendingEmail':
+                this.mailStatus = MailStatus.FAIL;
                 break;
             default:
                 break;
