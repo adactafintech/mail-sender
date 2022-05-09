@@ -1,7 +1,7 @@
-<p *ngIf="!initialData">
-    waiting for initial data
-</p>
-<p *ngIf="initialData">
-    <input type="text" value="Subject" [(ngModel)]="mail.subject">
-    <button (click)="send()">Send</button>
-</p>
+<div *ngIf="!initialData">
+    <span class="loader center"></span>
+</div>
+
+<div *ngIf="initialData">
+    <app-form (sendMail)="send($event)" [data]="initialData" [mailStatus]="mailStatus"></app-form>
+</div>

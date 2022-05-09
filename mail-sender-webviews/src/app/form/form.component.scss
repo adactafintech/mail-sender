@@ -1,0 +1,79 @@
+span {
+  color: red;
+}
+
+form {
+  display: grid;
+  padding-top: 5em;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  width: 33%;
+}
+
+input,
+textarea,
+mat-form-field {
+  width: 40em;
+}
+
+.inpTop {
+  border-bottom: 0;
+}
+
+.inp {
+  border-bottom: 1px solid gray;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: #f5f5f5;
+  border-radius: 0;
+}
+
+.form-group {
+  width: 50em;
+  margin-top: 2em;
+  display: flex;
+  justify-content: space-around;
+}
+
+.example-chip-list {
+  display: block;
+}
+
+.second {
+  margin-top: 2rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.third {
+  margin-top: 2rem;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+form {
+  display: grid;
+  justify-content: center;
+  margin: 5rem;
+}
+
+.clear {
+  height: 3rem;
+  margin-top: auto;
+  margin-bottom: auto
+}
+
+.submit {
+  width: 6.5rem;
+  height: 3rem;
+  margin-top: auto;
+}
+
+.left {
+  margin-top: 0;
+  margin-left: 8.5em;
+}

@@ -1,0 +1,56 @@
+<form [formGroup]="reactiveForm" (ngSubmit)="submitMail()">
+    <div class="form-group second">
+        <button class="btn btn-outline-success submit" type="submit" [disabled]="!isFormValid()"><i
+                class="fas fa-paper-plane"></i></button>
+        <div>
+            <label>From:</label>
+            <input class="form-control inpTop" formControlName="userFrom" />
+        </div>
+    </div>
+
+    <div class="form-group second">
+        <button type="button" class="btn btn-outline-secondary clear" (click)="resetReactiveForm()">Clear form</button>
+        <div>
+            <label>Email to:</label>
+            <mat-form-field class="example-chip-list" appearance="fill">
+                <mat-chip-list #chipList aria-label="Emails To">
+                    <mat-chip *ngFor="let email of reactiveForm.controls['usersTo'].value" (removed)="remove(email)">
+                        {{email}}
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                </mat-chip-list>
+                <input placeholder="Enter recipient here..." [matChipInputFor]="chipList"
+                    (matChipInputTokenEnd)="add($event)" formControlName="newEmail">
+                <span *ngIf="!reactiveForm.controls['newEmail'].valid && reactiveForm.controls['newEmail'].dirty">
+                    {{ userToValidationWarning }}</span>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="form-group third">
+        <label>Subject:</label>
+        <input class="form-control inp" placeholder="Enter subject here..." formControlName="subject" />
+    </div>
+    <div class="third left">
+        <span
+            *ngIf="reactiveForm.controls['subject'].enabled && !reactiveForm.controls['subject'].valid && (reactiveForm.controls['subject'].touched || reactiveForm.controls['subject'].dirty)">
+            {{ subjectValidationWarning }}</span>
+    </div>
+
+    <div class="form-group third">
+        <label>Content:</label>
+        <textarea class="form-control inp" placeholder="Enter mail content here..." formControlName="mailContent"
+            rows="3"></textarea>
+    </div>
+    <div class="third left">
+        <span
+            *ngIf="reactiveForm.controls['mailContent'].enabled && !reactiveForm.controls['mailContent'].valid && (reactiveForm.controls['mailContent'].touched || reactiveForm.controls['mailContent'].dirty)">
+            {{ mailContentValidationWarning }}</span>
+    </div>
+    
+</form>
+<div *ngIf="waiting">
+    <span class="loader center"></span>
+</div>

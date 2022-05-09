@@ -10,6 +10,7 @@ export class MailSenderWebview {
 
     private readonly _panel: vscode.WebviewPanel;
     private readonly _context: vscode.ExtensionContext;
+    private readonly _iconName = 'mail.svg';
 
     public static createOrShow(context: vscode.ExtensionContext) {
         if (MailSenderWebview.currentInstance) {
@@ -54,6 +55,22 @@ export class MailSenderWebview {
 
         this._panel.onDidDispose(this.onDidDispose);
         this._panel.webview.onDidReceiveMessage(this.onDidReceiveMessage);
+        this._panel.iconPath = {
+            light: vscode.Uri.joinPath(
+                this._context.extensionUri,
+                'resources',
+                'icons',
+                'light',
+                this._iconName
+            ),
+            dark: vscode.Uri.joinPath(
+                this._context.extensionUri,
+                'resources',
+                'icons',
+                'dark',
+                this._iconName
+            ),
+        };
     }
 
     private onDidDispose = (): void => {
@@ -86,7 +103,7 @@ export class MailSenderWebview {
         const msg: ExternalMessage<any> = {
             command: 'initialData',
             data: {
-                mailFrom: 'testuser',
+                mailFrom: 'test@example.com',
             },
         };
 
@@ -94,6 +111,10 @@ export class MailSenderWebview {
     };
 
     private sendMail = async (mailData: MailData): Promise<void> => {
+        const msg: ExternalMessage<any> = {
+            command: 'successfullySentEmail',
+        };
+
         try {
             const smtpSettings: SmtpSettings =
                 MailSenderConfiguration.smtpSettings;
@@ -102,8 +123,11 @@ export class MailSenderWebview {
 
             vscode.window.showInformationMessage(`Mail sent, msg id ${msgid}.`);
         } catch (err) {
+            msg.command = 'failSendingEmail';
             vscode.window.showErrorMessage(`Error sending mail, err: ${err}.`);
         }
+
+        this.postMessage(msg);
     };
 
     private getHtmlForWebview(): string {
